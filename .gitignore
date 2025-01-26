@@ -1,0 +1,66 @@
+# Build Folders
+bin/
+obj/
+out/
+
+# User-specific Files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+.vs/
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Dependencies
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Configuration
+appsettings.json
+appsettings.*.json
+
+# Resharper
+_ReSharper*/
+*.[rR]e[Ss]harper
+
+# Rider
+.idea/
+*.sln.iml
+
+# Testing
+TestResults/
+*.trx
+*.coverage
+.coverage/*
+coverage.*
+
+# DotNet Core
+.env
+.env.*
+
+# Local NuGet Cache
+*.nuget/
+
+# Others
+!global.json
+*.vsix
+*.swp
+*.bak
