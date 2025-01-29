@@ -23,7 +23,7 @@ public class GetUserResult
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// The user's phone number
+    /// The user's phone numberr
     /// </summary>
     public string Phone { get; set; } = string.Empty;   
 
