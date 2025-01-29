@@ -5,11 +5,6 @@ public class CreateSaleRequestValidator : AbstractValidator<CreateSaleRequest>
 {
     public CreateSaleRequestValidator()
     {
-        RuleFor(sale => sale.SaleNumber)
-            .NotEmpty()
-            .WithMessage("O número da venda é obrigatório.")
-            .Length(3, 50)
-            .WithMessage("O número da venda deve ter entre 3 e 50 caracteres.");
 
         RuleFor(sale => sale.Consumer)
             .NotEmpty()
@@ -18,12 +13,6 @@ public class CreateSaleRequestValidator : AbstractValidator<CreateSaleRequest>
         RuleFor(sale => sale.Agency)
             .NotEmpty()
             .WithMessage("O nome da agência é obrigatório.");
-
-        RuleFor(sale => sale.SaleDate)
-            .NotEmpty()
-            .WithMessage("A data da venda é obrigatória.")
-            .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("A data da venda não pode ser no futuro.");
 
         RuleForEach(sale => sale.Items)
             .SetValidator(new ItemSaleRequestValidator());
@@ -48,16 +37,16 @@ public class ItemSaleRequestValidator : AbstractValidator<ItemSaleRequest>
             .GreaterThan(0)
             .WithMessage("O preço unitário deve ser maior que 0.");
 
-        RuleFor(item => item.Discount)
-            .Must((item, desconto) => ValidarDesconto(item, desconto))
-            .WithMessage("O desconto aplicado é inválido para a quantidade informada.");
+        //RuleFor(item => item.Discount)
+        //    .Must((item, desconto) => ValidateDiscount(item, desconto))
+        //    .WithMessage("O desconto aplicado é inválido para a quantidade informada.");
 
-        RuleFor(item => item.TotalValue)
-            .Must((item, totalValue) => ValidarTotalValue(item, totalValue))
-            .WithMessage("O valor total do item está incorreto.");
+        //RuleFor(item => item.TotalValue)
+        //    .Must((item, totalValue) => ValidarTotalValue(item, totalValue))
+        //    .WithMessage("O valor total do item está incorreto.");
     }
 
-    private bool ValidarDesconto(ItemSaleRequest item, decimal desconto)
+    private bool ValidateDiscount(ItemSaleRequest item, decimal desconto)
     {
         decimal descontoEsperado = item.Quantity switch
         {

@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -39,6 +40,13 @@ public class SaleRepository : ISaleRepository
     /// <param name="id">The unique identifier of the sale</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The sale if found, null otherwise</returns>
+    public async Task<Sale?> GetBySaleNumberAsync(string saleNumber, CancellationToken cancellationToken = default)
+    {
+        return await _context.Sales
+            .Include(v => v.Items)
+            .FirstOrDefaultAsync(v => v.SaleNumber == saleNumber, cancellationToken);
+    }
+
     public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Sales

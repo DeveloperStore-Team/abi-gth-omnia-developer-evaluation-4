@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
@@ -7,10 +8,11 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 /// </summary>
 public class Sale : BaseEntity
 {
+
     /// <summary>
     /// Unique sale number.
     /// </summary>
-    public string SaleNumber { get; set; } = string.Empty;
+    public string SaleNumber { get; set; }
 
     /// <summary>
     /// Date of the sale.

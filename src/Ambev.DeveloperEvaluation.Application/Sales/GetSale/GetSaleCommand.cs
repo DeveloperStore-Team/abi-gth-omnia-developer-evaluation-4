@@ -10,14 +10,14 @@ public record GetSaleCommand : IRequest<GetSaleResult>
     /// <summary>
     /// The unique identifier of the sale to retrieve
     /// </summary>
-    public Guid Id { get; }
+    public string SaleNumber { get; set; }
 
     /// <summary>
     /// Initializes a new instance of GetSaleCommand
     /// </summary>
     /// <param name="id">The ID of the sale to retrieve</param>
-    public GetSaleCommand(Guid id)
+    public GetSaleCommand(string saleNumber)
     {
-        Id = id;
+        SaleNumber = saleNumber;
     }
 }

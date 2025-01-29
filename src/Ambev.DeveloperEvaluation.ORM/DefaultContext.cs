@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public class DefaultContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         modelBuilder.Entity<Sale>().OwnsMany(v => v.Items);
         base.OnModelCreating(modelBuilder);
+
     }
 }
 public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>

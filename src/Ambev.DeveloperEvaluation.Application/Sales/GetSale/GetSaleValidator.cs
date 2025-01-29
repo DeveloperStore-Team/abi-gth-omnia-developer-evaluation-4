@@ -9,8 +9,8 @@ public class GetSaleValidator : AbstractValidator<GetSaleCommand>
 {
     public GetSaleValidator()
     {
-        RuleFor(v => v.Id)
-            .NotEmpty().WithMessage("O ID da sale é obrigatório.")
-            .NotEqual(Guid.Empty).WithMessage("O ID da sale é inválido.");
+        RuleFor(v => v.SaleNumber)
+            .NotEmpty().WithMessage("O Número da venda é necessário para a busca.")
+            .NotEqual(String.Empty).WithMessage("O Número da venda é necessário para a busca.");
     }
 }

@@ -10,7 +10,6 @@ public abstract class BaseSaleCommandValidator<T> : AbstractValidator<T> where T
 {
     public BaseSaleCommandValidator()
     {
-        RuleFor(sale => sale.SaleNumber).NotEmpty().Length(3, 50);
         RuleFor(sale => sale.Consumer).NotEmpty();
         RuleFor(sale => sale.Agency).NotEmpty();
         RuleForEach(sale => sale.Items).SetValidator(new ItemSaleDtoValidator());

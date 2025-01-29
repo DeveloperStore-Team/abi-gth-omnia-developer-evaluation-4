@@ -22,8 +22,7 @@ public class CreateSaleProfile : Profile
             {
                 Product = src.Product,
                 Quantity = src.Quantity,
-                Price = src.Price,
-                Discount = src.Discount
+                Price = src.Price
             });
 
         CreateMap<ItemSaleCommand, ISaleItemCommand>()
@@ -31,8 +30,7 @@ public class CreateSaleProfile : Profile
             {
                 Product = src.Product,
                 Quantity = src.Quantity,
-                Price = src.Price,
-                Discount = src.Discount
+                Price = src.Price
             });
 
 
