@@ -1,6 +1,6 @@
-using AutoMapper;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
-using Ambev.DeveloperEvaluation.Domain.Application.Sale;
+using Ambev.DeveloperEvaluation.Domain.Entities;
+using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 
@@ -17,21 +17,7 @@ public class CreateSaleProfile : Profile
         CreateMap<CreateSaleRequest, CreateSaleCommand>();
         CreateMap<ItemSaleRequest, ItemSaleCommand>();
 
-        CreateMap<ItemSaleRequest, ISaleItemCommand>()
-            .ConstructUsing(src => new ItemSaleCommand
-            {
-                Product = src.Product,
-                Quantity = src.Quantity,
-                Price = src.Price
-            });
-
-        CreateMap<ItemSaleCommand, ISaleItemCommand>()
-            .ConstructUsing(src => new ItemSaleCommand
-            {
-                Product = src.Product,
-                Quantity = src.Quantity,
-                Price = src.Price
-            });
+        CreateMap<ItemSaleRequest, SaleItem>();
 
 
         CreateMap<CreateSaleRequest, CreateSaleCommand>();

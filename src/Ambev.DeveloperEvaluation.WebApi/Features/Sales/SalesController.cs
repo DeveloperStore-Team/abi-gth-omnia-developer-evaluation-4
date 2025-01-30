@@ -92,8 +92,8 @@ public class SalesController : BaseController
         });
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateSale(Guid id, [FromBody] UpdateSaleRequest request, CancellationToken cancellationToken)
+    [HttpPut()]
+    public async Task<IActionResult> UpdateSale(UpdateSaleRequest request, CancellationToken cancellationToken)
     {
         var validator = new UpdateSaleRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);

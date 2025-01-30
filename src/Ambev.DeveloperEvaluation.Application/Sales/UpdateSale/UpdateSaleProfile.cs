@@ -12,6 +12,7 @@ public class UpdateSaleProfile : Profile
     public UpdateSaleProfile()
     {
         CreateMap<UpdateSaleCommand, Sale>();
+
         CreateMap<CreateSaleCommand, UpdateSaleCommand>();
         CreateMap<ItemSaleCommand, SaleItem>();
         CreateMap<Sale, UpdateSaleResult>();

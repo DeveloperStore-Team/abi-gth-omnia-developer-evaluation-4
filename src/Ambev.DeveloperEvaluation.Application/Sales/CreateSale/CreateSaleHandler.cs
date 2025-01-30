@@ -31,7 +31,6 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
 
         var sale = _mapper.Map<Sale>(command);
 
-        sale.DataSale = sale.DataSale.ToUniversalTime();
         sale.SaleNumber = new SaleNumber().Value;
 
         await _saleRepository.AddAsync(sale, cancellationToken);

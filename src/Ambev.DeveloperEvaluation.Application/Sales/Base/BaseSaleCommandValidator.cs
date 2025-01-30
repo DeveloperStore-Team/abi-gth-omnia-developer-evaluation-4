@@ -1,12 +1,12 @@
 ﻿namespace Ambev.DeveloperEvaluation.Application.Sales;
 
-using Ambev.DeveloperEvaluation.Domain.Application.Sale;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using FluentValidation;
 
 /// <summary>
 /// Base validator for CreateSaleCommand and UpdateSaleCommand.
 /// </summary>
-public abstract class BaseSaleCommandValidator<T> : AbstractValidator<T> where T : ISaleCommand
+public abstract class BaseSaleCommandValidator<T> : AbstractValidator<T> where T : Sale
 {
     public BaseSaleCommandValidator()
     {
@@ -16,7 +16,7 @@ public abstract class BaseSaleCommandValidator<T> : AbstractValidator<T> where T
     }
 }
 
-public class ItemSaleDtoValidator : AbstractValidator<ISaleItemCommand>
+public class ItemSaleDtoValidator : AbstractValidator<SaleItem>
 {
     public ItemSaleDtoValidator()
     {
