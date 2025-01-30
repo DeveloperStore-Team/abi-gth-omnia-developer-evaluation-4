@@ -5,6 +5,8 @@
 /// </summary>
 public class CreateSaleResult
 {
-    public Guid Id { get; set; }
+    public string saleNumber { get; set; }
+    public string consumer { get; set; }
     public decimal totalValue { get; set; }
+    public decimal discounts { get; set; }
 }

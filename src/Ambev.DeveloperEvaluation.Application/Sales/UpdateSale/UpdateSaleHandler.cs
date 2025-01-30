@@ -29,18 +29,17 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var sale = await _saleRepository.GetByIdAsync(command.Id, cancellationToken);
+        var sale = await _saleRepository.GetBySaleNumberAsync(command.SaleNumber, cancellationToken);
         if (sale == null)
-            throw new KeyNotFoundException("Sale não encontrada.");
+            throw new KeyNotFoundException("Sale not found.");
 
-        // Atualiza os campos pertinentes da sale
-        var updatedSale = _mapper.Map<Sale>(sale);
+        var updatedSale = _mapper.Map(command, sale);
 
-        // Atualiza os itens
-        updatedSale.Items.Clear();
+        updatedSale.ClearItems();
+
         foreach (var item in command.Items)
         {
-            sale.Items.Add(new SaleItem(item.Product, item.Quantity, item.Price));
+            sale.AddItem(new SaleItem(item.Product, item.Quantity, item.Price));
         }
 
         await _saleRepository.UpdateAsync(sale, cancellationToken);

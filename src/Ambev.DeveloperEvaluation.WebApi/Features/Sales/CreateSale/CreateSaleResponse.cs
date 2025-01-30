@@ -9,8 +9,6 @@ public class CreateSaleResponse
     /// <summary>
     /// O identificador único da sale criada
     /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// O número da sale
     /// </summary>
@@ -25,4 +23,6 @@ public class CreateSaleResponse
     /// Valor total da sale
     /// </summary>
     public decimal TotalValue { get; set; }
+
+    public decimal Discounts { get; set; }
 }
