@@ -28,4 +28,20 @@ namespace Ambev.DeveloperEvaluation.Configuration
             _logger.LogInformation("Evento {EventType} publicado com sucesso.", typeof(T).Name);
         }
     }
+
+    public class MockEventPublisher : IEventPublisher
+    {
+        private readonly ILogger<MockEventPublisher> _logger;
+
+        public MockEventPublisher(ILogger<MockEventPublisher> logger)
+        {
+            _logger = logger;
+        }
+
+        public Task Publish<T>(T eventMessage) where T : class
+        {
+            _logger.LogWarning("RabbitMQ indisponível. Evento {EventType} foi descartado.", typeof(T).Name);
+            return Task.CompletedTask;
+        }
+    }
 }
