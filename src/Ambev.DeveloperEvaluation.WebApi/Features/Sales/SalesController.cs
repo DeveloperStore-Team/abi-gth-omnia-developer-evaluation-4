@@ -12,6 +12,8 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 
 /// <summary>
 /// Controller for managing sales operations
@@ -112,10 +114,20 @@ public class SalesController : BaseController
         });
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSale(Guid id, CancellationToken cancellationToken)
+    [HttpDelete("cancel/{saleNumber}")]
+    public async Task<IActionResult> CancelSale(string saleNumber, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new DeleteSaleCommand(id), cancellationToken);
+        var cancelRequest = new CancelSaleRequest { SaleNumber = new SaleNumber(saleNumber) };
+        var validator = new CancelSaleRequestValidator();
+        var validationResult = await validator.ValidateAsync(cancelRequest, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<CancelSaleCommand>(cancelRequest.SaleNumber);
+
+        await _mediator.Send(command, cancellationToken);
+
         return NoContent();
     }
 }

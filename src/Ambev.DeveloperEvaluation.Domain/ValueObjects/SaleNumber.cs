@@ -9,6 +9,11 @@ public readonly struct SaleNumber
         Value = GenerateSaleNumber();
     }
 
+    public SaleNumber(string value)
+    {
+        Value = value;
+    }
+
     private static string GenerateSaleNumber()
     {
         var random = new Random();

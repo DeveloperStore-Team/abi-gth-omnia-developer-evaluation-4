@@ -31,6 +31,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Events.Sales
             return new SaleModifiedEvent
             {
                 SaleId = sale.Id,
+                SaleNumber = sale.SaleNumber,
                 Items = sale.Items.Select(item => new SaleItemEvent
                 {
                     Product = item.Product,
