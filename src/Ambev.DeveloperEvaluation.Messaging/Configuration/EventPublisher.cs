@@ -12,10 +12,10 @@ namespace Ambev.DeveloperEvaluation.Configuration
 
     public class EventPublisher : IEventPublisher
     {
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IBus _publishEndpoint;
         private readonly ILogger<EventPublisher> _logger;
 
-        public EventPublisher(IPublishEndpoint publishEndpoint, ILogger<EventPublisher> logger)
+        public EventPublisher(IBus publishEndpoint, ILogger<EventPublisher> logger)
         {
             _publishEndpoint = publishEndpoint;
             _logger = logger;

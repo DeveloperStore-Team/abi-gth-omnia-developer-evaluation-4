@@ -1,7 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using SalesEventMessaging.Configuration;
+using SalesEventConsumer.Configuration;
 
 namespace Ambev.DeveloperEvaluation.IoC.ModuleInitializers
 {

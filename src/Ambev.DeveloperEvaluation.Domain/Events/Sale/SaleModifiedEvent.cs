@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SalesEventMessaging.Events
+namespace SalesEventConsumer.Events
 {
     public class SaleModifiedEvent
     {

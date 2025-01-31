@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MassTransit;
 
-namespace SalesEventMessaging.Configuration
+namespace SalesEventConsumer.Configuration
 {
     public static class MassTransitConfigurator
     {
@@ -17,26 +17,14 @@ namespace SalesEventMessaging.Configuration
                     var rabbitMqUsername = configuration["RabbitMQ:Username"] ?? "guest";
                     var rabbitMqPassword = configuration["RabbitMQ:Password"] ?? "guest";
 
-                    cfg.Host($"rabbitmq://{rabbitMqHost}:{rabbitMqPort}", h =>
+                    cfg.Host($"amqp://{rabbitMqHost}:{rabbitMqPort}", h =>
                     {
                         h.Username(rabbitMqUsername);
                         h.Password(rabbitMqPassword);
-                        h.UseSsl(s =>
-                        {
-                            s.Protocol = System.Security.Authentication.SslProtocols.Tls12;
-                        });
                     });
 
-                    cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(10)));
-                                       
-                    cfg.PrefetchCount = 10;
-                    cfg.ConcurrentMessageLimit = 5;
+                    cfg.ConfigureEndpoints(ctx);
 
-                    cfg.ReceiveEndpoint("error_queue", e =>
-                    {
-                        e.ConfigureConsumeTopology = false;
-                        e.BindDeadLetterQueue("original_queue", "error_queue");
-                    });
                 });
             });
         }

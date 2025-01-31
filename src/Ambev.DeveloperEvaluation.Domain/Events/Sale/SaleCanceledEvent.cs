@@ -1,6 +1,6 @@
 using System;
 
-namespace SalesEventMessaging.Events
+namespace SalesEventConsumer.Events
 {
     public class SaleCanceledEvent
     {

@@ -5,10 +5,6 @@ using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using SalesEventMessaging.Configuration;
-using SalesEventMessaging.Events;
-using System.Text.Json;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
@@ -47,14 +43,14 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
 
         await _saleRepository.AddAsync(sale, cancellationToken);
 
-        var saleCreatedEvent = new SalesEventMessaging.Events.SaleCreatedEvent
+        var saleCreatedEvent = new SalesEventConsumer.Events.SaleCreatedEvent
         {
             SaleId = sale.Id,
             SaleNumber = sale.SaleNumber,
             Consumer = sale.Consumer,
             Agency = sale.Agency,
             TotalValue = sale.TotalValue,
-            Items = sale.Items.Select(item => new SalesEventMessaging.Events.SaleItemEvent
+            Items = sale.Items.Select(item => new SalesEventConsumer.Events.SaleItemEvent
             {
                 Product = item.Product,
                 Quantity = item.Quantity,
