@@ -6,8 +6,8 @@ namespace SalesEventConsumer.Events
     public class SaleModifiedEvent
     {
         public Guid SaleId { get; set; }
-        public List<SaleItemEvent> UpdatedItems { get; set; }
-        public decimal NewTotalValue { get; set; }
-        public decimal NewDiscounts { get; set; }
+        public List<SaleItemEvent> Items { get; set; }
+        public decimal TotalValue { get; set; }
+        public decimal Discounts { get; set; }
     }
 }
