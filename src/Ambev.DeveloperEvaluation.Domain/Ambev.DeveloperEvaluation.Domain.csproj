@@ -6,11 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Application\Sale\" />
     <Folder Include="Enums\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Events\" />
-    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
   <ItemGroup>
