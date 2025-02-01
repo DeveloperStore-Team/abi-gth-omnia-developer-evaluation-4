@@ -40,8 +40,9 @@ A API aplica as seguintes regras de **desconto automático** nas vendas:
  ├── 📁 Tests                                  # Testes unitários e de integração
  ├── docker-compose.yml   
 
-## **📺 Monitor**
-Link do Repositório do Monitor:
-  https://github.com/DeveloperStore-Team/developer-store-monitor
+```
 
-A proposta deste projeto é acompanhar em tempo real as ocorrências relacionados a Venda; a fim de testar os recursos de messaging e eventos.
+## **📺 Teste com o Monitor**
+[Link do Repositório do Monitor](https://github.com/DeveloperStore-Team/developer-store-monitor)
+
+A proposta deste segundo projeto é acompanhar em tempo real as ocorrências relacionados a Venda; a fim de testar os recursos de messaging e eventos.
