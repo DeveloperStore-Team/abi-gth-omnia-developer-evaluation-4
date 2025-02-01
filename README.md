@@ -46,3 +46,77 @@ A API aplica as seguintes regras de **desconto automático** nas vendas:
 [Link do Repositório do Monitor](https://github.com/DeveloperStore-Team/developer-store-monitor)
 
 A proposta deste segundo projeto é acompanhar em tempo real as ocorrências relacionados a Venda; a fim de testar os recursos de messaging e eventos.
+## 📡 Configuração de Redes e Portas
+
+Os serviços utilizam a rede `ambev_network`, que deve ser criada antes de rodar os `docker-compose`. Abaixo estão as portas principais de cada serviço:
+
+- **Backend (.NET)**
+  - API de vendas
+  - Porta: `8080 (HTTP)`, `8081 (HTTPS)`
+
+- **Frontend (React)**
+  - Interface de monitoramento em tempo real
+  - Porta: `3000`
+
+- **RabbitMQ**
+  - Serviço de mensageria
+  - Porta: `5672 (AMQP)`, `15672 (Management UI)`
+
+- **PostgreSQL**
+  - Banco de dados para persistência das vendas
+  - Porta: `5432`
+
+## 📌 Configurando o Docker Compose**
+O projeto inclui um **docker-compose.yml** para facilitar a configuração dos serviços.  
+Para subir toda a infraestrutura (API, Banco de Dados e RabbitMQ), execute:
+
+```sh
+docker-compose up -d
+```
+### Conectar os containers manualmente à rede
+Pode ser necessária a configuração manual de um docker network para permitir que os conteiner se comuuniquem. Se os containers já foram iniciados, mas não estão na rede, você pode conectá-los manualmente:
+```sh
+docker network connect ambev_network ambev_developer_evaluation_webapi
+docker network connect ambev_network ambev_developer_evaluation_database
+docker network connect ambev_network rabbitmq
+```
+Verifique o network novamente e corfime a presença dos conteineres:
+```sh
+docker network inspect ambev_network
+```
+
+## Teste com Swagger
+
+- Após iniciar os conteineres, acesse http://localhost:8081/swagger para acessar a API. 
+- Teste um cadastro com o endpoint POST [/api/Sales]. Pode usar o exemplo abaixo:
+```Javascript
+    {
+      "consumer": "Diogo Camilo Santos",
+      "agency": "Teste Agência",
+      "items": [
+        {
+          "product": "PS5",
+          "quantity": 7,
+          "price": 500
+        }
+      ]
+    }
+```
+   Ao finalizar o cadastro, deve aparecer um retorno igual a esse:
+```Javascript 
+{
+  "data": {
+    "saleNumber": "4015563",
+    "consumer": "Diogo Camilo Santos",
+    "totalValue": 3150,
+    "discounts": 350
+  },
+  "success": true,
+  "message": "Venda criada com sucesso",
+  "errors": []
+}
+```
+
+O número da Venda (saleNumber) pode ser utilizado para testar os requests seguintes.
+
+Certifique-se de que essas portas não estejam ocupadas antes de iniciar a aplicação. 🚀
