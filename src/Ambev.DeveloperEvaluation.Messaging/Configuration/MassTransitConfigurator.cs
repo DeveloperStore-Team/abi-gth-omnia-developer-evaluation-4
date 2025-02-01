@@ -1,44 +1,43 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MassTransit;
+using Ambev.DeveloperEvaluation.Configuration;
 
-namespace SalesEventMessaging.Configuration
+namespace SalesEventConsumer.Configuration
 {
     public static class MassTransitConfigurator
     {
         public static void AddMessaging(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMassTransit(config =>
+            try
             {
-                config.UsingRabbitMq((ctx, cfg) =>
+                services.AddMassTransit(config =>
                 {
-                    var rabbitMqHost = configuration["RabbitMQ:Host"] ?? "localhost";
-                    var rabbitMqPort = configuration["RabbitMQ:Port"] ?? "5672";
-                    var rabbitMqUsername = configuration["RabbitMQ:Username"] ?? "guest";
-                    var rabbitMqPassword = configuration["RabbitMQ:Password"] ?? "guest";
-
-                    cfg.Host($"rabbitmq://{rabbitMqHost}:{rabbitMqPort}", h =>
+                    config.UsingRabbitMq((ctx, cfg) =>
                     {
-                        h.Username(rabbitMqUsername);
-                        h.Password(rabbitMqPassword);
-                        h.UseSsl(s =>
+                        var rabbitMqHost = configuration["RabbitMQ:Host"] ?? "localhost";
+                        var rabbitMqPort = configuration["RabbitMQ:Port"] ?? "5672";
+                        var rabbitMqUsername = configuration["RabbitMQ:Username"] ?? "guest";
+                        var rabbitMqPassword = configuration["RabbitMQ:Password"] ?? "guest";
+
+                        cfg.Host($"amqp://{rabbitMqHost}:{rabbitMqPort}", h =>
                         {
-                            s.Protocol = System.Security.Authentication.SslProtocols.Tls12;
+                            h.Username(rabbitMqUsername);
+                            h.Password(rabbitMqPassword);
                         });
+
+                        cfg.ConfigureEndpoints(ctx);
                     });
 
-                    cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(10)));
-                                       
-                    cfg.PrefetchCount = 10;
-                    cfg.ConcurrentMessageLimit = 5;
-
-                    cfg.ReceiveEndpoint("error_queue", e =>
-                    {
-                        e.ConfigureConsumeTopology = false;
-                        e.BindDeadLetterQueue("original_queue", "error_queue");
-                    });
                 });
-            });
+
+                services.AddScoped<IEventPublisher, EventPublisher>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Erro] Falha ao conectar com RabbitMQ: {ex.Message}");
+                services.AddScoped<IEventPublisher, MockEventPublisher>();
+            }
         }
     }
 }

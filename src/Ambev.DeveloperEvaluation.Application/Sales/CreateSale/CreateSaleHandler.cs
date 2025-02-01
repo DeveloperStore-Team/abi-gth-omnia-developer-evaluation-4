@@ -1,14 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Configuration;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events.Sales;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using SalesEventMessaging.Configuration;
-using SalesEventMessaging.Events;
-using System.Text.Json;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 
@@ -46,25 +43,7 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         sale.SaleNumber = new SaleNumber().Value;
 
         await _saleRepository.AddAsync(sale, cancellationToken);
-
-        var saleCreatedEvent = new SalesEventMessaging.Events.SaleCreatedEvent
-        {
-            SaleId = sale.Id,
-            SaleNumber = sale.SaleNumber,
-            Consumer = sale.Consumer,
-            Agency = sale.Agency,
-            TotalValue = sale.TotalValue,
-            Items = sale.Items.Select(item => new SalesEventMessaging.Events.SaleItemEvent
-            {
-                Product = item.Product,
-                Quantity = item.Quantity,
-                Price = item.Price,
-                Discount = item.Discount,
-                TotalValue = item.TotalValue
-            }).ToList()
-        };
-
-        await _eventPublisher.Publish(saleCreatedEvent);
+        await _eventPublisher.Publish(SaleEventFactory.GetSaleCreatedEvent(sale));
 
 
         return _mapper.Map<CreateSaleResult>(sale);

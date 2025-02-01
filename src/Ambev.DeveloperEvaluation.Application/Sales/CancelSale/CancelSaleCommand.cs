@@ -1,4 +1,5 @@
 
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
@@ -6,19 +7,19 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 /// <summary>
 /// Command for deleting a sale
 /// </summary>
-public record DeleteSaleCommand : IRequest<bool>
+public record CancelSaleCommand : IRequest<bool>
 {
     /// <summary>
     /// The unique identifier of the sale to delete
     /// </summary>  
-    public Guid Id { get; }
+    public SaleNumber SaleNumber { get; }
 
     /// <summary>
     /// Initializes a new instance of DeleteSaleCommand
     /// </summary>
     /// <param name="id">The ID of the sale to delete</param>
-    public DeleteSaleCommand(Guid id)
+    public CancelSaleCommand(SaleNumber id)
     {
-        Id = id;
+        SaleNumber = id;
     }
 }

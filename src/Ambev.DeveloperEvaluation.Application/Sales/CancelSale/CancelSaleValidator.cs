@@ -5,15 +5,15 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
 /// <summary>
 /// Validator for DeleteSaleCommand
 /// </summary>
-public class DeleteSaleValidator : AbstractValidator<DeleteSaleCommand>
+public class CancelSaleValidator : AbstractValidator<CancelSaleCommand>
 {
     /// <summary>
     /// Initializes validation rules for DeleteSaleCommand
     /// </summary>
-    public DeleteSaleValidator()
+    public CancelSaleValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.SaleNumber)
             .NotEmpty()
-            .WithMessage("Sale ID is required");
+            .WithMessage("SaleNumber is required");
     }
 }
