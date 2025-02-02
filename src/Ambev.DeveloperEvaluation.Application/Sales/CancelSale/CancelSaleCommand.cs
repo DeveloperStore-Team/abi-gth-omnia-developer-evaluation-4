@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 
 /// <summary>
 /// Command for deleting a sale

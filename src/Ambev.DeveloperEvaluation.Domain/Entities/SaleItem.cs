@@ -13,6 +13,7 @@
         public void Cancel()
         {
             IsCanceled = true;
+            UpdateQuantity(0);
         }
 
         public SaleItem(string product, int quantity, decimal price)

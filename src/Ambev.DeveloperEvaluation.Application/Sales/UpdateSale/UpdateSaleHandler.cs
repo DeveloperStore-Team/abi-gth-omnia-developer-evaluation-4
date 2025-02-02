@@ -38,12 +38,7 @@ public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleRe
 
         var updatedSale = _mapper.Map(command, sale);
 
-        updatedSale.ClearItems();
-
-        foreach (var item in command.Items)
-        {
-            sale.AddItem(new SaleItem(item.Product, item.Quantity, item.Price));
-        }
+        sale.UpdateItems(command.Items);
 
         await _saleRepository.UpdateAsync(sale, cancellationToken);
         await _eventPublisher.Publish(SaleEventFactory.GetSaleModifiedEvent(sale));

@@ -99,6 +99,22 @@ public class SaleRepository : ISaleRepository
         return sale;
     }
 
+    public async Task<Sale?> CancelItemAsync(string saleNumber, int saleItemId, CancellationToken cancellationToken = default)
+    {
+        var sale = await GetBySaleNumberAsync(saleNumber, cancellationToken);
+
+        if (sale == null)
+            return null;
+
+        sale.CancelItem(saleItemId);
+
+        _context.Sales.Update(sale);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return sale;
+    }
+
     /// <summary>
     /// Retrieves all sales from the database
     /// </summary>

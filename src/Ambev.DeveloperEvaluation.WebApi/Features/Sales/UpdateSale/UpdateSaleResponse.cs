@@ -7,6 +7,5 @@ public class UpdateSaleResponse
 {
     public Guid Id { get; set; }
     public string SaleNumber { get; set; } = string.Empty;
-    public string Consumer { get; set; } = string.Empty;
     public decimal TotalValue { get; set; }
 }

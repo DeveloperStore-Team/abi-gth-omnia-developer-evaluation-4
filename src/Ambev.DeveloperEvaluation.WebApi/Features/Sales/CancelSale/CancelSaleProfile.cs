@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 

@@ -77,12 +77,47 @@ public class Sale : BaseEntity
     public void ClearItems()
         => Items.Clear();
 
+    public void UpdateItems(List<SaleItem> updatedItems)
+    {
+        foreach (var updated in updatedItems)
+        {
+            if (!Items.Exists(item => item.Id == updated.Id))
+            {
+                AddItem(updated);
+            }
+            else
+            {
+                SaleItem item = Items.FirstOrDefault(item => item.Id == updated.Id);
+
+                if (item != null)
+                {
+                    item.Price = updated.Price;
+                    item.UpdateQuantity(updated.Quantity);
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Cancels the sale.
     /// </summary>
     public void Cancel()
     {
         IsCanceled = true;
+    }
+
+    /// <summary>
+    /// Cancels a specific sale item.
+    /// </summary>
+    public void CancelItem(int saleItemId)
+    {
+        if (!Items.Exists(item => item.Id == saleItemId))
+            throw new KeyNotFoundException("O item informado não está incluso nesta venda.");
+
+        Items.Find(item => item.Id == saleItemId)?.Cancel();
+
+        if (Items.All(item => item.IsCanceled))
+            Cancel();
     }
 
     /// <summary>

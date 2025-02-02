@@ -9,11 +9,13 @@ using Ambev.DeveloperEvaluation.Application.Sales;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
-using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleItem;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem;
 
 /// <summary>
 /// Controller for managing sales operations
@@ -97,6 +99,8 @@ public class SalesController : BaseController
     [HttpPut()]
     public async Task<IActionResult> UpdateSale(UpdateSaleRequest request, CancellationToken cancellationToken)
     {
+
+        
         var validator = new UpdateSaleRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
@@ -125,6 +129,23 @@ public class SalesController : BaseController
             return BadRequest(validationResult.Errors);
 
         var command = _mapper.Map<CancelSaleCommand>(cancelRequest.SaleNumber);
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpDelete("cancel/{saleNumber}/item/{saleItemId}")]
+    public async Task<IActionResult> CancelSaleItem(string saleNumber, int saleItemId, CancellationToken cancellationToken)
+    {
+        var cancelItemRequest = _mapper.Map<CancelSaleItemRequest>((new SaleNumber(saleNumber), saleItemId));
+        var validator = new CancelSaleItemRequestValidator();
+        var validationResult = await validator.ValidateAsync(cancelItemRequest, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        var command = _mapper.Map<CancelSaleItemCommand>(cancelItemRequest);
 
         await _mediator.Send(command, cancellationToken);
 
