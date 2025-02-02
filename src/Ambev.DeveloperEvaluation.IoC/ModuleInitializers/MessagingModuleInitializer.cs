@@ -1,4 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Configuration;
+﻿using Ambev.DeveloperEvaluation.Messaging.Publisher;
+using Ambev.DeveloperEvaluation.Messaging.Publisher.Interfaces;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SalesEventConsumer.Configuration;

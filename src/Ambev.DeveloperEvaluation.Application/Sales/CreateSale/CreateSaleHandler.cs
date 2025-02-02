@@ -1,8 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Configuration;
-using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events.Sales;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+using Ambev.DeveloperEvaluation.Messaging.Publisher.Interfaces;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -43,8 +43,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
         sale.SaleNumber = new SaleNumber().Value;
 
         await _saleRepository.AddAsync(sale, cancellationToken);
-        await _eventPublisher.Publish(SaleEventFactory.GetSaleCreatedEvent(sale));
 
+        _eventPublisher.Publish(SaleEventFactory.GetSaleCreatedEvent(sale)).Wait();
 
         return _mapper.Map<CreateSaleResult>(sale);
     }
