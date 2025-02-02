@@ -1,7 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+using Ambev.DeveloperEvaluation.Messaging.Configuration;
+using Ambev.DeveloperEvaluation.Messaging.Publisher;
+using Ambev.DeveloperEvaluation.Messaging.Publisher.Interfaces;
 using MassTransit;
-using Ambev.DeveloperEvaluation.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SalesEventConsumer.Configuration
 {
@@ -9,35 +11,25 @@ namespace SalesEventConsumer.Configuration
     {
         public static void AddMessaging(this IServiceCollection services, IConfiguration configuration)
         {
-            try
+            var settings = new MessageBrokerSettings(configuration);
+
+            services.AddMassTransit(config =>
             {
-                services.AddMassTransit(config =>
+                config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    config.UsingRabbitMq((ctx, cfg) =>
+
+                    cfg.Host($"{settings.Protocol}://{settings.Host}:{settings.Port}", h =>
                     {
-                        var rabbitMqHost = configuration["RabbitMQ:Host"] ?? "localhost";
-                        var rabbitMqPort = configuration["RabbitMQ:Port"] ?? "5672";
-                        var rabbitMqUsername = configuration["RabbitMQ:Username"] ?? "guest";
-                        var rabbitMqPassword = configuration["RabbitMQ:Password"] ?? "guest";
-
-                        cfg.Host($"amqp://{rabbitMqHost}:{rabbitMqPort}", h =>
-                        {
-                            h.Username(rabbitMqUsername);
-                            h.Password(rabbitMqPassword);
-                        });
-
-                        cfg.ConfigureEndpoints(ctx);
+                        h.Username(settings.Username);
+                        h.Password(settings.Password);
                     });
 
+                    cfg.ConfigureEndpoints(ctx);
                 });
+            });
 
-                services.AddScoped<IEventPublisher, EventPublisher>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Erro] Falha ao conectar com RabbitMQ: {ex.Message}");
-                services.AddScoped<IEventPublisher, MockEventPublisher>();
-            }
+            services.AddScoped<IEventPublisher, EventPublisher>();
+            services.AddSingleton(settings!);
         }
     }
 }
