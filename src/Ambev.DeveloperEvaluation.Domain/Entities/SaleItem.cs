@@ -2,11 +2,18 @@
 {
     public class SaleItem
     {
+        public int Id { get; set; }
         public string Product { get; set; } = string.Empty;
         public int Quantity { get; private set; }
         public decimal Price { get; set; }
         public decimal Discount { get; private set; }
         public decimal TotalValue => (Price * Quantity) - Discount;
+        public bool IsCanceled { get; private set; }
+
+        public void Cancel()
+        {
+            IsCanceled = true;
+        }
 
         public SaleItem(string product, int quantity, decimal price)
         {

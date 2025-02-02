@@ -11,12 +11,17 @@ public class Sale : BaseEntity
     /// <summary>
     /// Unique sale number.
     /// </summary>
-    public string SaleNumber { get; set; }
+    public string? SaleNumber { get; set; }
+
+    public Sale()
+    {
+        SaleDate = DateTime.Now.ToUniversalTime();
+    }
 
     /// <summary>
     /// Date of the sale.
     /// </summary>
-    public DateTime DataSale { get; set; } = DateTime.Now.ToUniversalTime(); 
+    public DateTime SaleDate { get; set; }
  
     /// <summary>
     /// Name of the customer.
@@ -53,13 +58,13 @@ public class Sale : BaseEntity
         if (item.Quantity > 20)
             throw new InvalidOperationException("Não é possível vender mais de 20 itens idênticos.");
 
-        var existingItem = Items.FirstOrDefault(i => i.Product == item.Product);
+        var existingItem = Items.FirstOrDefault(i => i.Id == item.Id && !IsCanceled);
 
         if (existingItem != null)
         {
             int newQuantity = existingItem.Quantity + item.Quantity;
             if (newQuantity > 20)
-                throw new InvalidOperationException("A soma dos itens não pode exceder 20 unidades.");
+                throw new InvalidOperationException("A soma dos itens não pode exceSder 20 unidades.");
 
             existingItem.UpdateQuantity(newQuantity);
         }
